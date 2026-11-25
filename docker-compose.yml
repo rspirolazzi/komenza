@@ -1,0 +1,131 @@
+name: komenza
+
+services:
+  db:
+    image: mysql:5.7.44
+    platform: linux/amd64
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE:-reservations_ui}
+      MYSQL_USER: ${DB_USERNAME:-komenza}
+      MYSQL_PASSWORD: ${DB_PASSWORD:?Definir DB_PASSWORD en .env}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Definir MYSQL_ROOT_PASSWORD en .env}
+    command: ["--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci"]
+    ports:
+      - "127.0.0.1:${DB_HOST_PORT:-3316}:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      # Por TCP: evita dar por listo el servidor temporal de inicialización
+      test: ["CMD-SHELL", "MYSQL_PWD=$$MYSQL_PASSWORD mysql -h 127.0.0.1 -u $$MYSQL_USER -e 'SELECT 1' $$MYSQL_DATABASE"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+  # Captura los emails: nada sale a destinatarios reales
+  mailpit:
+    image: axllent/mailpit:v1.21
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:${MAILPIT_PORT:-8125}:8025"
+
+  backend:
+    build:
+      context: ./reservations-backend
+      args:
+        INSTALL_XDEBUG: ${INSTALL_XDEBUG:-false}
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+      mailpit:
+        condition: service_started
+    environment:
+      APP_NAME: Komenza
+      APP_ENV: local
+      APP_KEY: ${APP_KEY:?Definir APP_KEY en .env}
+      APP_DEBUG: ${APP_DEBUG:-true}
+      APP_URL: http://localhost:${BACKEND_PORT:-8100}
+      APP_WEB_URL: http://localhost:${FRONTEND_PORT:-3100}
+      APP_GOOGLE_MAP_KEY: ${GOOGLE_MAP_KEY:-}
+      JWT_SECRET: ${JWT_SECRET:?Definir JWT_SECRET en .env}
+      SEED_ADMIN_PASSWORD: ${SEED_ADMIN_PASSWORD:?Definir SEED_ADMIN_PASSWORD en .env}
+      LOG_CHANNEL: daily
+      DB_CONNECTION: mysql
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: ${DB_DATABASE:-reservations_ui}
+      DB_USERNAME: ${DB_USERNAME:-komenza}
+      DB_PASSWORD: ${DB_PASSWORD:?Definir DB_PASSWORD en .env}
+      BROADCAST_DRIVER: log
+      CACHE_DRIVER: file
+      SESSION_DRIVER: file
+      QUEUE_DRIVER: sync
+      MAIL_DRIVER: smtp
+      MAIL_HOST: mailpit
+      MAIL_PORT: 1025
+      MAIL_ENCRYPTION: "null"
+      MAIL_FROM_ADDRESS: ${MAIL_FROM_ADDRESS:-no-reply@example.com}
+      MAIL_FROM_ADDRESS_K: ${MAIL_FROM_ADDRESS_K:-no-reply@example.com}
+      MAIL_FROM_ADDRESS_BE: ${MAIL_FROM_ADDRESS_BE:-no-reply@example.com}
+      MAIL_FROM_NAME: Komenza
+      RUN_MIGRATIONS: "true"
+    ports:
+      - "127.0.0.1:${BACKEND_PORT:-8100}:80"
+    volumes:
+      - ./reservations-backend/app:/var/www/html/app:ro
+      - ./reservations-backend/config:/var/www/html/config:ro
+      - ./reservations-backend/database:/var/www/html/database:ro
+      - ./reservations-backend/resources:/var/www/html/resources:ro
+      - ./reservations-backend/routes:/var/www/html/routes:ro
+      - backend_storage:/var/www/html/storage
+      - brand_uploads:/var/www/html/public/img/brand
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "-o", "/dev/null", "http://localhost/login"]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 60s
+
+  frontend:
+    build: ./reservations-frontend
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy
+    environment:
+      NEXT_PUBLIC_API_BASE: http://localhost:${BACKEND_PORT:-8100}
+      NEXT_PUBLIC_API_URL: http://localhost:${BACKEND_PORT:-8100}/api/
+      NEXT_PUBLIC_GOOGLE_MAP_KEY: ${GOOGLE_MAP_KEY:-}
+      # Recarga en caliente sobre carpetas montadas desde Windows
+      WATCHPACK_POLLING: "true"
+    ports:
+      - "127.0.0.1:${FRONTEND_PORT:-3100}:3000"
+    volumes:
+      - ./reservations-frontend/pages:/app/pages:ro
+      - ./reservations-frontend/src:/app/src:ro
+      - ./reservations-frontend/public:/app/public:ro
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:3000/').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 20s
+      timeout: 15s
+      retries: 10
+      start_period: 60s
+
+  # Opcional: docker compose --profile mobile up -d
+  mobile:
+    profiles: ["mobile"]
+    build: ./reservations-mobile
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy
+    environment:
+      EXPO_PUBLIC_API_URL: http://localhost:${BACKEND_PORT:-8100}/api/
+    ports:
+      - "127.0.0.1:${MOBILE_PORT:-8181}:8081"
+
+volumes:
+  db_data:
+  backend_storage:
+  brand_uploads:

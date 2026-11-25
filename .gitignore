@@ -1,0 +1,23 @@
+# Entorno y secretos: solo se versiona .env.example
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Dependencias y artefactos
+node_modules/
+vendor/
+.next/
+.expo/
+*.log
+*.tsbuildinfo
+.DS_Store
+.idea/
+.vscode/
+
+# Material local que no se publica
+/originals/
+/docs/private/
+/reservations-mobile/reservations-frontend/
+/reservations-frontend/public/images/restaurants/

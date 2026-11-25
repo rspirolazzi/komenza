@@ -1,0 +1,14 @@
+// Paleta Komenza (docs/brand/brand-guide.md). Se define antes de importar Bootstrap.
+$primary: #0F4C3A;
+$secondary: #5E6B65;
+$success: #1B7A43;
+$info: #1F6FB2;
+$warning: #F2A93B;
+$danger: #B3261E;
+$light: #F6F8F5;
+$dark: #17211D;
+$body-bg: $light;
+$body-color: $dark;
+$font-family-sans-serif: 'Figtree', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+@import 'bootstrap/scss/bootstrap';

@@ -1,0 +1,20 @@
+@extends('layouts.app')
+
+@section('content')
+    <section class="content-header">
+        <h1>
+            User
+        </h1>
+    </section>
+    <div class="content">
+        <div class="box box-primary">
+            <div class="box-body">
+                <div class="row" style="padding-left: 20px">
+                    @include('admin.users.show_fields')
+                    @include('admin.users.reservations')
+                    <a href="{!! route('admin.users.index') !!}" class="btn btn-default">Volver al listado</a>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
