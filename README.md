@@ -1,6 +1,9 @@
 <div align="center">
 
-<img src="docs/brand/logos/a-isologo-color.svg" alt="Komenza" width="380">
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/brand/logos/a-isologo-negativo.svg">
+  <img src="docs/brand/logos/a-isologo-color.svg" alt="Komenza" width="380">
+</picture>
 
 ### Todo comienza en la mesa.
 
@@ -224,7 +227,7 @@ Próximos pasos: compilar la web, actualizar PHP, Laravel y MySQL (sin soporte),
 ---
 
 <div align="center">
-<img src="docs/brand/logos/a-isotipo-color.svg" alt="" width="36">
+<img src="docs/brand/logos/a-icono-app.svg" alt="" width="36">
 <br>
 <sub>Desarrollado por <a href="https://github.com/rspirolazzi">@rspirolazzi</a>. Los nombres, teléfonos y emails de las capturas son ficticios.</sub>
 </div>
