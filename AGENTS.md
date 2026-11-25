@@ -17,7 +17,7 @@ Lee el README y el análisis del proyecto que vayas a tocar. Las capturas del RE
 
 ## Estructura
 
-- Repositorio único (monorepo): git se ejecuta en la raíz. Remoto: `git@github.com:rspirolazzi/komenzar.git`, **público**.
+- Repositorio único (monorepo): git se ejecuta en la raíz. Remoto: `git@github.com:rspirolazzi/komenza.git`, **público**.
 - Solo locales, ignorados por git: `originals/` (código original; no modificar), `docs/private/`, fotos de `public/images/restaurants/` y `.env*`. No forzar su publicación.
 - `reservations-mobile/reservations-frontend/`: copia vieja embebida, también ignorada. No usar.
 

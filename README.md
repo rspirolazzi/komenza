@@ -139,11 +139,11 @@ erDiagram
 Requisitos: Docker con Compose y PowerShell.
 
 ```powershell
-git clone git@github.com:rspirolazzi/komenzar.git
+git clone git@github.com:rspirolazzi/komenza.git
 ```
 
 ```powershell
-cd komenzar
+cd komenza
 ```
 
 Genera `.env` con secretos aleatorios:
