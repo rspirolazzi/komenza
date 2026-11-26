@@ -6,9 +6,12 @@ export interface CancelReservationResult {
   error?: string;
 }
 
-export async function cancelReservation(reservationId: string): Promise<CancelReservationResult> {
+export async function cancelReservation(token?: string): Promise<CancelReservationResult> {
+  if (!token) {
+    return { error: 'No encontramos los datos de la reserva.' };
+  }
   try {
-    await ReservationService.cancel(reservationId);
+    await ReservationService.cancel(token);
     return { success: true };
   } catch (error: any) {
     return {

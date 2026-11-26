@@ -6,30 +6,13 @@ import { Controller, useForm } from 'react-hook-form';
 import { Button, Platform, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { PersistPartial } from 'redux-persist/es/persistReducer';
+import { getAvailableHours } from '../domain/usecases/getAvailableHours';
 import StoresService from '../services/StoresService';
 import { RootState } from '../store';
 import { repeatLastReservation } from '../store/userSlice';
 
 // Agrega el campo brand al formulario para que el payload sea compatible con el backend migrado
 export type ReservationFormData = ReservationPayload
-
-// Utilidad para obtener horarios disponibles por sucursal y fecha
-function getAvailableHours(store: any, selectedDate: string): string[] {
-  if (!store || !selectedDate || !store.delivery_times) return [];
-  const day = new Date(selectedDate).getDay();
-  // Filtra los horarios válidos para el día seleccionado
-  const times = store.delivery_times.filter((t: any) => day >= parseInt(t.start_day, 10) && day <= parseInt(t.end_day, 10));
-  let hours: string[] = [];
-  times.forEach((t: any) => {
-    const start = parseInt(t.start_hour, 10);
-    const end = parseInt(t.end_hour, 10);
-    for (let h = start; h <= end; h++) {
-      hours.push(`${h.toString().padStart(2, '0')}:00`);
-      if (t.interval && t.interval === '30') hours.push(`${h.toString().padStart(2, '0')}:30`);
-    }
-  });
-  return hours;
-}
 
 export default function ReservationForm({ onSubmit, initialValues }: { onSubmit: (data: ReservationFormData) => void, initialValues?: Partial<ReservationFormData> }) {
   const dispatch = useDispatch();
@@ -285,7 +268,7 @@ export default function ReservationForm({ onSubmit, initialValues }: { onSubmit:
 
           <Controller
             control={control}
-            name="notes"
+            name="comment"
             render={({ field: { onChange, value } }) => (
               <TextInput
                 style={styles.input}

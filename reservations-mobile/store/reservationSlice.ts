@@ -59,6 +59,9 @@ const reservationSlice = createSlice({
     removeReservation(state, action: PayloadAction<number>) {
       state.reservations.splice(action.payload, 1);
     },
+    removeReservationByToken(state, action: PayloadAction<string>) {
+      state.reservations = state.reservations.filter(r => r.token !== action.payload);
+    },
   },
 });
 
@@ -71,6 +74,7 @@ export const {
   errorFetchingReservation,
   resetReservation,
   removeReservation,
+  removeReservationByToken,
 } = reservationSlice.actions;
 
 export default reservationSlice.reducer;

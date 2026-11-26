@@ -24,7 +24,7 @@ export async function createReservation(
       reservation_date: data.reservation_date,
       reservation_time: data.reservation_time,
       people: data.people,
-      notes: data.notes,
+      comment: data.comment,
       brand: selectedBrand.name,
       brand_id: selectedBrand.id,
       reservation,

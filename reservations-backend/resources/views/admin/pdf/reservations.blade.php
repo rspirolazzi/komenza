@@ -33,7 +33,7 @@
                     <td >{!! $reservation->people !!}</td>
                     <td>{!! $reservation->reservation_date->format('d/m') !!} <span class="hide" >{!! $reservation->reservation_date->format('Y-n-d') !!}</span></td>
                     <td >{!! App\Helper\Helper::getFormatTime($reservation->reservation_time) !!}</td>
-                    <td><span data-toggle="tooltip" title="{!! $reservation->comment !!}">{!! str_limit($reservation->comment, 10, '...') !!}</span></td>
+                    <td><span data-toggle="tooltip" title="{{ $reservation->comment }}">{{ str_limit($reservation->comment, 10, '...') }}</span></td>
                     <td >{!! Form::reservationStatus($reservation->status) !!}</td>
                     <td>{{ $reservation->comment }}</td>
                 </tr>

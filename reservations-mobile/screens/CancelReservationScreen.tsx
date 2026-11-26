@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { Button, StyleSheet, Text, View } from 'react-native';
+import { useDispatch } from 'react-redux';
 import ErrorMessage from '../components/ErrorMessage';
 import { cancelReservation } from '../domain/usecases/cancelReservation';
+import { removeReservationByToken } from '../store/reservationSlice';
 
 export default function CancelReservationScreen({ route, navigation }: any) {
-  const { reservationId } = route?.params || {};
+  const { reservation } = route?.params || {};
+  const dispatch = useDispatch();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -14,8 +17,9 @@ export default function CancelReservationScreen({ route, navigation }: any) {
     setSuccessMessage(null);
     setLoading(true);
     try {
-      const result = await cancelReservation(reservationId);
+      const result = await cancelReservation(reservation?.token);
       if (result.success) {
+        dispatch(removeReservationByToken(reservation.token));
         setSuccessMessage('Reserva cancelada con éxito');
         setTimeout(() => {
           navigation.goBack();
@@ -39,7 +43,7 @@ export default function CancelReservationScreen({ route, navigation }: any) {
           <Text style={{ color: '#166534', fontSize: 14 }}>{successMessage}</Text>
         </View>
       )}
-      <Button title={loading ? 'Cancelando...' : 'Cancelar reserva'} onPress={handleCancel} disabled={loading} />
+      <Button title={loading ? 'Cancelando...' : 'Cancelar reserva'} onPress={handleCancel} disabled={loading || !!successMessage} />
     </View>
   );
 }

@@ -10,7 +10,6 @@ export type ReservationPayload = {
   reservation_date: string;
   reservation_time: string;
   people: number;
-  notes?: string;
   store_id?: number;
   brand_id?: number;
   
@@ -37,9 +36,8 @@ class ReservationService extends BaseService {
     if (!data.token) throw new Error('Token requerido');
     return this.post<ReservationResponse>(`reservation/${data.token}`, data).then(resp => resp.data);
   }
-  async cancel(data: ReservationPayload) {
-    if (!data.token) throw new Error('Token requerido');
-    return this.post<ReservationResponse>(`reservation/cancel/${data.token}`, data).then(resp => resp.data);
+  async cancel(token: string) {
+    return this.post<ReservationResponse>(`reservation/cancel/${token}`).then(resp => resp.data);
   }
   async getReservation(brandId: string, token: string) {
     return this.get<ReservationResponse>('reservation', { brandId, token }).then(resp => resp.data);

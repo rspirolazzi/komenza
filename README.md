@@ -209,7 +209,7 @@ En desarrollo; **todavía no está listo para producción**.
 |---|---|
 | API y panel | Funcionan en Docker |
 | Web | Funciona en modo desarrollo; falta que compile a producción |
-| App | Corre en modo web; cancelar y la carga dinámica de marcas están pendientes |
+| App | Corre en modo web; la carga dinámica de marcas está pendiente |
 
 Próximos pasos: compilar la web, actualizar PHP, Laravel y MySQL (sin soporte), corregir el cálculo de capacidad, llevar la marca a la app y ampliar los tests.
 

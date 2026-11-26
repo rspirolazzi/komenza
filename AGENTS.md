@@ -28,7 +28,7 @@ Lee el README y el análisis del proyecto que vayas a tocar. Las capturas del RE
 | todos | `docker compose up -d --wait`; ver [docs/docker.md](docs/docker.md) | `docker compose ps` |
 | backend | Docker | `vendor/bin/phpunit` en el contenedor (sin fallos) |
 | frontend | `npm ci` y `npm run dev` | `npm run build` (hoy falla), `npx tsc --noEmit --incremental false` (22 errores conocidos) |
-| mobile | `npm install` y `npm start` | `npx tsc --noEmit` (2 errores conocidos), `npm run lint` |
+| mobile | `npm install` y `npm start` | `npx tsc --noEmit` (1 error conocido), `npm run lint` |
 
 No empeores esa línea base; actualiza los números si la mejoras.
 

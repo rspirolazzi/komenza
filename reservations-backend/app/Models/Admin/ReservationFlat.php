@@ -53,6 +53,7 @@ class ReservationFlat extends Model implements Auditable
         'brand',
         'brand_id',
         'company_id',
+        'comment',
     ];
 
     /**
@@ -75,6 +76,7 @@ class ReservationFlat extends Model implements Auditable
         'reservation' => 'datetime',
         'brand_id' => 'integer',
         'brand' => 'string',
+        'comment' => 'string',
     ];
 
     /**

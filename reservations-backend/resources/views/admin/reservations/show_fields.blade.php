@@ -43,7 +43,7 @@
 <!-- Comment Field -->
 <div class="form-group">
     {!! Form::label('comment', 'Comment:') !!}
-    <p>{!! $reservation->comment !!}</p>
+    <p>{{ $reservation->comment }}</p>
 </div>
 
 <!-- Admin Notes Field -->

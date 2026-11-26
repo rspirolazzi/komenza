@@ -62,18 +62,17 @@ También `npm run android`, `npm run ios`, `npm run web` y `npm run lint`.
 ### Resultado de la prueba **[V]**
 
 - `expo export --platform web`: OK, con `/+not-found` como única ruta estática (no existe `app/index.tsx`).
-- `tsc --noEmit`: 2 errores (M1 y M3).
-- No se probó una instalación limpia ni la ejecución en emulador, dispositivo o navegador.
+- `tsc --noEmit`: 1 error (M3).
+- En modo web con Docker (2026-11-26) se probó crear con notas y horario a las y media, y cancelar.
+- No se probó en emulador ni en dispositivo.
 
 ## 4. Hallazgos
 
 | # | Hallazgo |
 |---|---|
-| M1 | **Cancelar está roto [V por tsc]**: el caso de uso pasa un string y el servicio exige un objeto con `token`. Además la lista envía `reservation` y la pantalla lee `reservationId` |
 | M2 | Marcas fijas en el código (ids 1 y 2, Komenza y Bar Ejemplo): no consulta `/brands` ni contempla compañía |
 | M3 | `App.tsx` importa `navigation/AppNavigator`, inexistente **[V por tsc]**; no se usa, la entrada es `expo-router/entry` |
 | M4 | Sin `app/index.tsx`: depende de que `_layout` renderice su propio navegador. Confirmar en dispositivo |
-| M5 | Envía `notes`; el backend espera `comment`, así que se pierde |
 | M6 | Personas fijo de 1 a 10: ignora `max_persons` |
 | M7 | "Continuar" no valida el paso 1; los errores de ese paso quedan ocultos en el paso 2 |
 | M8 | Un fallo al crear se guarda igualmente en "Mis reservas" con `status: 'error'` |

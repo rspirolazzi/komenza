@@ -124,7 +124,6 @@ Los tests de marcas, sucursales y reservas en la raíz de `tests/` no se ejecuta
 | F4 | Modificar con token inexistente devuelve 500 **[V]**: se hace `fill()` antes de validar null |
 | F5 | La API no valida horario de atención, fecha pasada ni `max_persons` **[V]** (aceptó las 03:00 y 30 personas) |
 | F6 | Al crear, la respuesta trae `status: null` para una reserva normal **[V]** |
-| F7 | `comment` no está en `fillable` de ReservationFlat: se pierde al crear |
 | F8 | `users` no tiene `store_id` ni `brand_id`, pero `ReservationAuthCriteria` filtra por ellos: los roles de marca y sucursal no verían reservas |
 | F9 | El ABM de administradores no asigna rol ni compañía (`fillable`) y no hashea la contraseña |
 | F11 | `ReservationExceeds` solo se envía al modificar, no al crear |
