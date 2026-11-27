@@ -1,5 +1,14 @@
 <?php
 
+// TRUSTED_PROXIES: vacío (sin proxy), "*" (el que conecta) o IPs/CIDR separados por coma.
+// Detrás de un proxy con HTTPS hace falta para que Laravel genere URLs https.
+$trustedProxies = trim((string) env('TRUSTED_PROXIES', ''));
+if ($trustedProxies === '') {
+    $trustedProxies = null;
+} elseif ($trustedProxies !== '*') {
+    $trustedProxies = array_map('trim', explode(',', $trustedProxies));
+}
+
 return [
 
     /*
@@ -15,7 +24,7 @@ return [
      * of your proxy (e.g. if using ELB or similar).
      *
      */
-    'proxies' => null, // [<ip addresses>,], '*'
+    'proxies' => $trustedProxies, // [<ip addresses>,], '*'
 
     /*
      * To trust one or more specific proxies that connect
