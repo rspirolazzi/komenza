@@ -143,7 +143,8 @@ jobs:
               exit 1
             fi
             # Recrea solo este servicio y espera su healthcheck
-            docker compose up -d --no-deps --wait --wait-timeout 180 "$SERVICE"
+            #docker compose up -d --no-deps --wait --wait-timeout 180 "$SERVICE"
+            docker compose up -d "$SERVICE"
             docker image prune -f
             docker compose ps
             docker compose images "$SERVICE"
