@@ -35,6 +35,8 @@ services:
       APP_KEY: ${APP_KEY:?Definir APP_KEY en .env}
       APP_URL: ${APP_URL:?Definir APP_URL en .env}
       APP_WEB_URL: ${APP_WEB_URL:?Definir APP_WEB_URL en .env}
+      # Confía en las cabeceras X-Forwarded-* del proxy HTTPS (formularios y redirecciones en https)
+      TRUSTED_PROXIES: "${TRUSTED_PROXIES:-*}"
       APP_GOOGLE_MAP_KEY: ${GOOGLE_MAP_KEY:-}
       JWT_SECRET: ${JWT_SECRET:?Definir JWT_SECRET en .env}
       SEED_ADMIN_PASSWORD: ${SEED_ADMIN_PASSWORD:-}

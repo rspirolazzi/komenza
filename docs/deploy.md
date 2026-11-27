@@ -52,6 +52,11 @@ Cada imagen se publica con los tags `latest` y `sha-<commit>`. Para volver atrá
 
 La URL de la API queda fijada en la imagen de la web al compilar: si cambia `NEXT_PUBLIC_API_BASE`, volver a ejecutar *Deploy web*.
 
+### Proxy HTTPS
+
+- El proxy debe enviar `X-Forwarded-Proto`, `X-Forwarded-Host` y `X-Forwarded-Port`. El backend las acepta según `TRUSTED_PROXIES` (`*` por defecto en `deploy/`). Sin eso, Laravel arma los formularios del panel con `http://` y el navegador avisa que el envío no es seguro.
+- Con web y panel en el mismo dominio, mandar al backend: `/api/`, `/admin`, `/login`, `/logout`, `/password/`, `/js/`, `/css/`, `/img/` (incluye los logos y fondos subidos), `/jquery-timepicker-master/` y `/vendor/`. El resto va a la web. En ese caso, `NEXT_PUBLIC_API_BASE` es el dominio, sin `/api`.
+
 ## Android
 
 - Paquete: `ar.com.komenza.app` (en `reservations-mobile/app.config.js`). No se puede cambiar después de publicar en Google Play.
