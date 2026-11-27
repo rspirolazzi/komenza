@@ -79,15 +79,14 @@ Abrir http://localhost:3000/Default (compañía del seeder) con el backend levan
 
 - `npm ci`: OK.
 - `npm run dev`: OK.
-- **`npm run build` falla**: error de tipos en `pages/[company]/gracias/[token].tsx:8`. `tsc --noEmit` informa 22 errores.
+- `npm run build`: OK desde el 2026-11-26, con `NEXT_PUBLIC_API_URL` definida. `tsc --noEmit`: sin errores.
+- Imagen de producción: `Dockerfile.prod` (servidor autónomo de Next.js); ver [deploy.md](deploy.md).
 
 ## 4. Hallazgos
 
 | # | Hallazgo |
 |---|---|
-| W1 | **No compila a producción [V]** |
-| W6 | `user/thunks.ts` llama métodos inexistentes; `utils/alert.tsx` importa `react-confirm-alert`, no instalado |
 | W8 | Los horarios se calculan solo en el cliente e incluyen la hora de cierre; no manejan rangos que crucen medianoche |
 | W9 | Se perdió la regla "No se permite reservar el 31/12" del historial de git: no está en el DatePicker actual |
-| W10 | Restos de CRA: `src/App.js`, `src/index.js`, `registerServiceWorker.js`, `history.js`, `Congrats/_index.js`, README de CRA, `public/index.html` |
+| W10 | Restos de CRA: README de CRA y `public/index.html` (el resto se quitó el 2026-11-26) |
 | W12 | Datos del cliente (nombre, email, celular, cumpleaños) persisten en `localStorage` |

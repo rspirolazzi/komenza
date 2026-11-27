@@ -208,16 +208,17 @@ En desarrollo; **todavía no está listo para producción**.
 | Componente | Estado |
 |---|---|
 | API y panel | Funcionan en Docker |
-| Web | Funciona en modo desarrollo; falta que compile a producción |
+| Web | Compila a producción; deploy con GitHub Actions ([guía](docs/deploy.md)) |
 | App | Corre en modo web; la carga dinámica de marcas está pendiente |
 
-Próximos pasos: compilar la web, actualizar PHP, Laravel y MySQL (sin soporte), corregir el cálculo de capacidad, llevar la marca a la app y ampliar los tests.
+Próximos pasos: actualizar PHP, Laravel y MySQL (sin soporte), corregir el cálculo de capacidad, llevar la marca a la app y ampliar los tests.
 
 ## Documentación
 
 | Documento | Contenido |
 |---|---|
 | [Guía de Docker](docs/docker.md) | Instalación y uso diario |
+| [Deploy y release](docs/deploy.md) | GitHub Actions, servidor y Android |
 | [Análisis del backend](docs/analysis-backend.md) | Stack, datos, API y hallazgos |
 | [Análisis del frontend](docs/analysis-frontend.md) | Stack, rutas y hallazgos |
 | [Análisis de mobile](docs/analysis-mobile.md) | Stack, navegación y hallazgos |

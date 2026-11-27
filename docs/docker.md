@@ -71,7 +71,7 @@ Las imágenes subidas desde el panel, los logs y la base de datos persisten en v
 | PHP 7.2 | Con 7.4, las versiones de `composer.lock` fallan al enviar emails y generar PDF |
 | Composer 1.10 | Respeta el lock; Laravel 5.6.39 no lee el formato de Composer 2 |
 | Snapshot de Debian | Los paquetes de la imagen base ya no están en los espejos |
-| Frontend en desarrollo | `next build` todavía falla |
+| Frontend en desarrollo | Recarga en caliente; la imagen de producción es `Dockerfile.prod` ([deploy.md](deploy.md)) |
 | Puertos 3100 y 8100 | No chocar con otros proyectos |
 | Xdebug opcional | `INSTALL_XDEBUG=true` y reconstruir; opción no probada |
 

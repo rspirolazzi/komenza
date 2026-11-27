@@ -10,8 +10,13 @@ import StoreMap from '../../components/StoreMap';
 import { brandNameToClass } from '../../utils/products';
 import { useRouter } from 'next/router';
 
-const Congrats: React.FC = ({ token }) => {
-  const reservation = useSelector((state: RootState) => state.reservation?.lastReservation);
+interface CongratsProps {
+  token?: string;
+}
+
+const Congrats: React.FC<CongratsProps> = ({ token }) => {
+  // La API devuelve marca y sucursal como objetos
+  const reservation = useSelector((state: RootState) => state.reservation?.lastReservation) as any;
   const store = reservation?.store;
   const brand = reservation?.brand;
   const router = useRouter();

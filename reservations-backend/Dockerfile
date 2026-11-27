@@ -2,6 +2,8 @@
 FROM php:7.2-apache
 
 ARG INSTALL_XDEBUG=false
+# Producción: true deja afuera las dependencias de desarrollo (phpunit, faker)
+ARG COMPOSER_NO_DEV=false
 
 # Debian buster ya no está en los espejos: se usa un snapshot fijo, con firmas verificadas
 ARG DEBIAN_SNAPSHOT=20210115T000000Z
@@ -30,12 +32,14 @@ WORKDIR /var/www/html
 
 # Composer 1: el lock se generó con esa versión y Laravel 5.6.39 no lee el formato de Composer 2
 COPY composer.json composer.lock ./
-RUN composer install --no-interaction --prefer-dist --no-scripts --no-plugins --no-autoloader
+RUN composer install --no-interaction --prefer-dist --no-scripts --no-plugins --no-autoloader \
+        $([ "$COMPOSER_NO_DEV" = "true" ] && echo --no-dev)
 
 COPY . .
 RUN mkdir -p storage/app/public storage/framework/cache storage/framework/sessions storage/framework/views \
         storage/framework/testing storage/logs bootstrap/cache public/img/brand \
     && composer dump-autoload --optimize --no-plugins --no-scripts \
+        $([ "$COMPOSER_NO_DEV" = "true" ] && echo --no-dev) \
     && php artisan package:discover \
     && chown -R www-data:www-data storage bootstrap/cache public/img/brand
 

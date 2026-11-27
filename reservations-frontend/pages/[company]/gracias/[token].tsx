@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 
 const CongratsPage: React.FC = () => {
   const router = useRouter();
-  const { token } = router.query;
+  const { token } = router.query as { token?: string };
   return <Congrats token={token} />;
 };
 

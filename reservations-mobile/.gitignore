@@ -40,3 +40,7 @@ app-example
 .env
 .env.*
 !.env.example
+
+# Proyectos nativos generados por "expo prebuild" (CI de Android)
+/android/
+/ios/

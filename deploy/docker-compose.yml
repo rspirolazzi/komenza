@@ -1,0 +1,88 @@
+# Producción en el servidor: copiar este archivo y .env.example (como .env) a DEPLOY_PATH.
+# Los workflows actualizan komenza-backend y komenza-frontend con las imágenes de ghcr.io.
+# Guía: docs/deploy.md
+name: komenza
+
+services:
+  db:
+    image: mysql:5.7.44
+    platform: linux/amd64
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE:-komenza}
+      MYSQL_USER: ${DB_USERNAME:-komenza}
+      MYSQL_PASSWORD: ${DB_PASSWORD:?Definir DB_PASSWORD en .env}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Definir MYSQL_ROOT_PASSWORD en .env}
+    command: ["--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci"]
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "MYSQL_PWD=$$MYSQL_PASSWORD mysql -h 127.0.0.1 -u $$MYSQL_USER -e 'SELECT 1' $$MYSQL_DATABASE"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+
+  komenza-backend:
+    image: ${IMAGE_PREFIX:?Definir IMAGE_PREFIX en .env}/komenza-backend:${BACKEND_TAG:-latest}
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      APP_NAME: Komenza
+      APP_ENV: production
+      APP_DEBUG: "false"
+      APP_KEY: ${APP_KEY:?Definir APP_KEY en .env}
+      APP_URL: ${APP_URL:?Definir APP_URL en .env}
+      APP_WEB_URL: ${APP_WEB_URL:?Definir APP_WEB_URL en .env}
+      APP_GOOGLE_MAP_KEY: ${GOOGLE_MAP_KEY:-}
+      JWT_SECRET: ${JWT_SECRET:?Definir JWT_SECRET en .env}
+      SEED_ADMIN_PASSWORD: ${SEED_ADMIN_PASSWORD:-}
+      LOG_CHANNEL: daily
+      DB_CONNECTION: mysql
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: ${DB_DATABASE:-komenza}
+      DB_USERNAME: ${DB_USERNAME:-komenza}
+      DB_PASSWORD: ${DB_PASSWORD:?Definir DB_PASSWORD en .env}
+      BROADCAST_DRIVER: log
+      CACHE_DRIVER: file
+      SESSION_DRIVER: file
+      QUEUE_DRIVER: sync
+      MAIL_DRIVER: smtp
+      MAIL_HOST: ${MAIL_HOST:?Definir MAIL_HOST en .env}
+      MAIL_PORT: ${MAIL_PORT:-587}
+      MAIL_USERNAME: ${MAIL_USERNAME:-}
+      MAIL_PASSWORD: ${MAIL_PASSWORD:-}
+      MAIL_ENCRYPTION: ${MAIL_ENCRYPTION:-tls}
+      MAIL_FROM_ADDRESS: ${MAIL_FROM_ADDRESS:?Definir MAIL_FROM_ADDRESS en .env}
+      MAIL_FROM_ADDRESS_K: ${MAIL_FROM_ADDRESS_K:-}
+      MAIL_FROM_ADDRESS_BE: ${MAIL_FROM_ADDRESS_BE:-}
+      MAIL_FROM_NAME: Komenza
+      RUN_MIGRATIONS: "true"
+    # Solo en el servidor: delante va un proxy con HTTPS
+    ports:
+      - "127.0.0.1:${BACKEND_PORT:-8100}:80"
+    volumes:
+      - backend_storage:/var/www/html/storage
+      - brand_uploads:/var/www/html/public/img/brand
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "-o", "/dev/null", "http://localhost/login"]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 60s
+
+  komenza-frontend:
+    image: ${IMAGE_PREFIX:?Definir IMAGE_PREFIX en .env}/komenza-frontend:${FRONTEND_TAG:-latest}
+    restart: unless-stopped
+    depends_on:
+      komenza-backend:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:${FRONTEND_PORT:-3100}:3000"
+
+volumes:
+  db_data:
+  backend_storage:
+  brand_uploads:

@@ -12,6 +12,7 @@
 | Trabajar en `reservations-frontend` | [docs/analysis-frontend.md](docs/analysis-frontend.md) |
 | Trabajar en `reservations-mobile` | [docs/analysis-mobile.md](docs/analysis-mobile.md) |
 | Marca: logo y colores (aplicada en web y panel) | [docs/brand/brand-guide.md](docs/brand/brand-guide.md) |
+| Deploy (GitHub Actions, servidor) y release de Android | [docs/deploy.md](docs/deploy.md) |
 
 Lee el README y el análisis del proyecto que vayas a tocar. Las capturas del README están en `docs/screenshots/`.
 
@@ -27,8 +28,8 @@ Lee el README y el análisis del proyecto que vayas a tocar. Las capturas del RE
 |---|---|---|
 | todos | `docker compose up -d --wait`; ver [docs/docker.md](docs/docker.md) | `docker compose ps` |
 | backend | Docker | `vendor/bin/phpunit` en el contenedor (sin fallos) |
-| frontend | `npm ci` y `npm run dev` | `npm run build` (hoy falla), `npx tsc --noEmit --incremental false` (22 errores conocidos) |
-| mobile | `npm install` y `npm start` | `npx tsc --noEmit` (1 error conocido), `npm run lint` |
+| frontend | `npm ci` y `npm run dev` | `npm run build` (con `NEXT_PUBLIC_API_URL` definida), `npx tsc --noEmit --incremental false` (sin errores) |
+| mobile | `npm install` y `npm start` | `npx tsc --noEmit` (sin errores), `npm run lint` |
 
 No empeores esa línea base; actualiza los números si la mejoras.
 

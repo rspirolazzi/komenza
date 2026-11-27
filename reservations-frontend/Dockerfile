@@ -1,4 +1,4 @@
-# Imagen de desarrollo: "next build" todavía falla (ver docs/analysis-frontend.md)
+# Imagen de desarrollo, con recarga en caliente. Producción: Dockerfile.prod
 FROM node:22-bookworm-slim
 
 ENV NEXT_TELEMETRY_DISABLED=1

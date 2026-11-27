@@ -2,7 +2,7 @@ import _ from 'lodash';
 import moment from 'moment';
 
 export const getRangeHoursFromStore = (store: any, selectedDate: string): { dataDay: string[]; dataNight: string[] } => {
-    let result = { dataDay: [], dataNight: [] };
+    let result: { dataDay: string[]; dataNight: string[] } = { dataDay: [], dataNight: [] };
     if (store && store.delivery_times && store.delivery_times.length > 0 && selectedDate) {
         var day = moment(selectedDate).toDate().getDay();
         var times = store.delivery_times.filter(function (time: any) {

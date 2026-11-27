@@ -99,7 +99,7 @@ const FormStoreReservation: React.FC<FormStoreReservationProps> = ({ isEditable,
             token: initial?.token,
         };
         const action = isEditable ? editReservation(payload) : saveReservation(payload);
-        dispatch(action)
+        dispatch<any>(action)
             .unwrap()
             .then((res) => {
                 handleRedirect(res.token)

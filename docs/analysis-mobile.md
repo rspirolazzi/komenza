@@ -62,7 +62,8 @@ También `npm run android`, `npm run ios`, `npm run web` y `npm run lint`.
 ### Resultado de la prueba **[V]**
 
 - `expo export --platform web`: OK, con `/+not-found` como única ruta estática (no existe `app/index.tsx`).
-- `tsc --noEmit`: 1 error (M3).
+- `tsc --noEmit`: sin errores.
+- `expo prebuild --platform android`: OK, con el paquete y la firma de `app.config.js`. El build con Gradle corre en CI ([deploy.md](deploy.md)).
 - En modo web con Docker (2026-11-26) se probó crear con notas y horario a las y media, y cancelar.
 - No se probó en emulador ni en dispositivo.
 
@@ -71,7 +72,6 @@ También `npm run android`, `npm run ios`, `npm run web` y `npm run lint`.
 | # | Hallazgo |
 |---|---|
 | M2 | Marcas fijas en el código (ids 1 y 2, Komenza y Bar Ejemplo): no consulta `/brands` ni contempla compañía |
-| M3 | `App.tsx` importa `navigation/AppNavigator`, inexistente **[V por tsc]**; no se usa, la entrada es `expo-router/entry` |
 | M4 | Sin `app/index.tsx`: depende de que `_layout` renderice su propio navegador. Confirmar en dispositivo |
 | M6 | Personas fijo de 1 a 10: ignora `max_persons` |
 | M7 | "Continuar" no valida el paso 1; los errores de ese paso quedan ocultos en el paso 2 |
@@ -81,4 +81,4 @@ También `npm run android`, `npm run ios`, `npm run web` y `npm run lint`.
 | M11 | Fechas vía `toISOString()` y `new Date('YYYY-MM-DD')` (UTC): en Argentina puede correrse el día |
 | M12 | Cumpleaños es texto libre; el token se muestra en las tarjetas |
 | M13 | "Eliminar" solo borra del dispositivo: la reserva sigue vigente |
-| M16 | No hay configuración de build de tiendas: faltan `eas.json`, `bundleIdentifier` y `package` |
+| M16 | Android ya tiene `package` y firma (CI); falta `bundleIdentifier` para iOS. El nombre visible sigue siendo "reservations-mobile" |
